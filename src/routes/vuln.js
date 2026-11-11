@@ -38,11 +38,16 @@ router.post('/sql', (req, res) => {
 });
 
 router.post('/sql-search', (req, res) => {
-  const { table = 'users', column = 'name', value = '' } = req.body;
-  // VULNERABLE: multiple parameters concatenated into SQL
-  const sql = `SELECT * FROM ${table} WHERE ${column} = '${value}'`;
-  const result = mockDb.runRawSql(sql);
-  res.json({ sql, ...result });
+  const { table = 'users', column = 'username', value = '' } = req.body ?? {};
+  if (table !== 'users' || !['id', 'username', 'role'].includes(column)) {
+    return res.status(400).json({ error: 'table/column not allowed' });
+  }
+  if (typeof value !== 'string' && !(typeof value === 'number' && Number.isFinite(value))) {
+    return res.status(400).json({ error: 'value must be a string or finite number' });
+  }
+  // Compare literal data in the in-memory store; never construct or execute SQL.
+  const rows = mockDb.users.filter((user) => String(user[column]) === String(value));
+  res.json({ rows });
 });
 
 // --- Command injection ---
