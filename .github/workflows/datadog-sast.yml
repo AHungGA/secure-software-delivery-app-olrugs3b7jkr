@@ -1,0 +1,33 @@
+on: [push]
+
+jobs:
+  sast:
+    name: Datadog Static Analyzer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Run Datadog Static Analysis
+        id: datadog-sast
+        uses: DataDog/datadog-static-analyzer-github-action@v3
+        with:
+          dd_api_key: ${{ secrets.DD_API_KEY }}
+          dd_app_key: ${{ secrets.DD_APP_KEY }}
+          dd_site: "datadoghq.com"
+          cpu_count: 2
+          enable_performance_statistics: false
+          secrets_enabled: true
+  sca:
+    runs-on: ubuntu-latest
+    name: Datadog SBOM Generation and Upload
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Check imported libraries are secure and compliant
+        id: datadog-software-composition-analysis
+        uses: DataDog/datadog-sca-github-action@main
+        with:
+          dd_api_key: ${{ secrets.DD_API_KEY }}
+          dd_app_key: ${{ secrets.DD_APP_KEY }}
+          dd_site: "datadoghq.com"

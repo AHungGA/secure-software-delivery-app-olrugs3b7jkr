@@ -1,0 +1,31 @@
+{
+  "name": "dash2026-sast-workshop-app",
+  "version": "1.0.0",
+  "description": "Node.js app with intentional vulnerabilities for SAST workshop (Datadog)",
+  "main": "src/index.js",
+  "scripts": {
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "lab:trigger-cws": "docker compose -f docker-compose.cws-proc-demo.yml build && docker compose -f docker-compose.cws-proc-demo.yml run --rm cws-proc-demo",
+    "lab:trigger-cws-app": "bash script/trigger-cws-workload-protection-demo.sh",
+    "lab:trigger-appsec": "sh script/trigger-api-protection-traffic.sh",
+    "lab:introduce-pr-gate-demo": "bash script/introduce-pr-gate-sast-demo.sh",
+    "workshop:apply-secure": "bash script/apply-secure-app.sh",
+    "start": "bash script/start-workshop-app.sh",
+    "start:runtime": "bash script/start-workshop-app.sh",
+    "dev": "node --watch -r ./dotenv-load.js src/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cookie-parser": "^1.4.6",
+    "dd-trace": "^5.97.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.2",
+    "jsonwebtoken": "8.5.1",
+    "lodash": "4.17.20",
+    "micromatch": "4.0.5"
+  }
+}

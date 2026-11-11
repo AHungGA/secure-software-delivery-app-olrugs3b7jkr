@@ -1,0 +1,17 @@
+# Standalone stack: process-execution patterns for Cloud Workload Security (CWS) labs.
+# Separate from docker-compose.yml (workshop-app + Agent). Build/run when you need
+# container-native signals such as interactive shell, sqlite→shell, DNS lookups, chmod +x on new files.
+#
+# From /root/lab:
+#   npm run lab:trigger-cws
+#   docker compose -f docker-compose.cws-proc-demo.yml run --rm cws-proc-demo
+#
+# https://docs.datadoghq.com/security/default_rules/?category=cat-workload-protection#all
+
+services:
+  cws-proc-demo:
+    build:
+      context: ./cws-proc-demo
+      dockerfile: Dockerfile
+    image: workshop-cws-proc-demo:local
+    restart: "no"

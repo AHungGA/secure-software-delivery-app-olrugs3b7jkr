@@ -1,0 +1,3 @@
+schema-version: v1.0
+sast:
+  use-default-rulesets: true

@@ -1,0 +1,8 @@
+node_modules/
+.env
+.env.local
+# EC2 SSH private key (never commit)
+DDAgent/*.pem
+*.log
+.DS_Store
+DDAgent
